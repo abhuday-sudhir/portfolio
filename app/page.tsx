@@ -38,6 +38,24 @@ export default function Portfolio() {
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   
+  // Typewriter Animation Logic for "Hey, I'm Abhuday ✨"
+  const fullGreeting = "Hey, I'm Abhuday ✨";
+  const [typedGreeting, setTypedGreeting] = useState("");
+
+  useEffect(() => {
+    let index = 0;
+    const timer = setInterval(() => {
+      if (index <= fullGreeting.length) {
+        setTypedGreeting(fullGreeting.slice(0, index));
+        index++;
+      } else {
+        clearInterval(timer);
+      }
+    }, 90);
+
+    return () => clearInterval(timer);
+  }, []);
+
   // Contact Form State
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isSent, setIsSent] = useState(false);
@@ -55,25 +73,18 @@ export default function Portfolio() {
     setTimeout(() => setIsSent(false), 6000);
   };
 
-  // Scroll Spy Logic
+  // Accurate Scroll Spy Logic
   useEffect(() => {
     const sections = ['hero', 'experience', 'projects', 'achievements', 'contact'];
     
     const handleScroll = () => {
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 80) {
-        setActiveSection('contact');
-        return;
-      }
+      const scrollPosition = window.scrollY + 260;
 
-      const scrollPosition = window.scrollY + 220;
-
-      for (const sectionId of sections) {
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const sectionId = sections[i];
         const element = document.getElementById(sectionId);
         if (element) {
-          const top = element.offsetTop;
-          const height = element.offsetHeight;
-
-          if (scrollPosition >= top && scrollPosition < top + height) {
+          if (scrollPosition >= element.offsetTop) {
             setActiveSection(sectionId);
             break;
           }
@@ -89,7 +100,7 @@ export default function Portfolio() {
 
   const experiences = [
     {
-      role: "Software Engineer Intern",
+      role: "Data Engineer Intern",
       company: "7startup",
       period: "June 2026 – Present",
       location: "Remote, India",
@@ -108,9 +119,9 @@ export default function Portfolio() {
       period: "June 2025 – Sept 2025",
       location: "Remote, India",
       points: [
-        "Developed a modular image annotation platform using ReactJS and AWS S3, enabling scalable labelling for 10,000+ images while reducing storage latency by 25%[cite: 1].",
-        "Integrated AWS S3 data pipelines with the frontend UI, automating dataset retrieval and improving throughput by 30%[cite: 1].",
-        "Delivered 3 annotation features in collaboration with AI researchers, reducing dataset preparation time by 20% across 2 model training cycles[cite: 1]."
+        "Developed a modular image annotation platform using ReactJS and AWS S3, enabling scalable labelling for 10,000+ images while reducing storage latency by 25%.",
+        "Integrated AWS S3 data pipelines with the frontend UI, automating dataset retrieval and improving throughput by 30%.",
+        "Delivered 3 annotation features in collaboration with AI researchers, reducing dataset preparation time by 20% across 2 model training cycles."
       ]
     }
   ];
@@ -119,19 +130,19 @@ export default function Portfolio() {
     {
       title: "Order Flow Microservices",
       tags: ["Java", "Spring Boot", "Kafka", "Redis", "PostgreSQL", "Docker Compose"],
-      description: "Built a 4-service Kafka-based microservices architecture, reducing transaction latency by 40ms and eliminating synchronous service calls. Engineered stateless JWT auth with Redis refresh token rotation and Saga transactions[cite: 1].",
+      description: "Built a 4-service Kafka-based microservices architecture, reducing transaction latency by 40ms and eliminating synchronous service calls. Engineered stateless JWT auth with Redis refresh token rotation and Saga transactions.",
       link: "https://github.com/abhuday-sudhir"
     },
     {
       title: "IAM & Auth Platform",
       tags: ["Java", "Spring Boot", "OAuth2", "JWT", "PostgreSQL", "Redis"],
-      description: "Architected an IAM platform with OAuth2 and Redis-backed token blacklisting, reducing unauthorized access attempts by 90% across 500+ simulated sessions with structured SLF4J audit logging[cite: 1].",
+      description: "Architected an IAM platform with OAuth2 and Redis-backed token blacklisting, reducing unauthorized access attempts by 90% across 500+ simulated sessions with structured SLF4J audit logging.",
       link: "https://github.com/abhuday-sudhir"
     },
     {
       title: "Distributed URL Shortener",
       tags: ["Java", "Redis", "Spring Boot", "PostgreSQL"],
-      description: "Reduced redirect latency by 50% (40ms → 20ms) using Redis cache-aside (85% cache hit rate). Reduced PostgreSQL write load by 95% by buffering click events in Redis and flushing via scheduled batch jobs[cite: 1].",
+      description: "Reduced redirect latency by 50% (40ms → 20ms) using Redis cache-aside (85% cache hit rate). Reduced PostgreSQL write load by 95% by buffering click events in Redis and flushing via scheduled batch jobs.",
       link: "https://github.com/abhuday-sudhir"
     }
   ];
@@ -140,19 +151,19 @@ export default function Portfolio() {
     {
       title: "Multi-Agent Supply Chain",
       tags: ["Python", "LangGraph", "SQLAlchemy", "Streamlit"],
-      description: "Engineered a multi-agent orchestration system using LangGraph, with shared state management, improving workflow coordination efficiency across 4+ autonomous agents via ReAct-based reasoning[cite: 2].",
+      description: "Engineered a multi-agent orchestration system using LangGraph, with shared state management, improving workflow coordination efficiency across 4+ autonomous agents via ReAct-based reasoning.",
       link: "https://github.com/abhuday-sudhir"
     },
     {
       title: "AI Research Paper Assistant",
       tags: ["FastAPI", "Gemini API", "LangChain", "RAG"],
-      description: "Reduced research paper drafting and formatting effort by 60% with automated IEEE formatting validation and RAG-based conversational retrieval pipelines supporting sub-2s response latency[cite: 2].",
+      description: "Reduced research paper drafting and formatting effort by 60% with automated IEEE formatting validation and RAG-based conversational retrieval pipelines supporting sub-2s response latency.",
       link: "https://github.com/abhuday-sudhir"
     },
     {
       title: "Agentic Meeting Scheduler",
       tags: ["Python", "Flask", "Gemini API", "SQLite"],
-      description: "Reduced manual scheduling effort by 80% by developing an agentic meeting scheduling assistant using Gemini API and automated coordination workflows over REST endpoints[cite: 2].",
+      description: "Reduced manual scheduling effort by 80% by developing an agentic meeting scheduling assistant using Gemini API and automated coordination workflows over REST endpoints.",
       link: "https://github.com/abhuday-sudhir"
     }
   ];
@@ -162,11 +173,12 @@ export default function Portfolio() {
     { name: 'Experience', href: '#experience', id: 'experience' },
     { name: 'Projects', href: '#projects', id: 'projects' },
     { name: 'Achievements', href: '#achievements', id: 'achievements' },
+    { name: 'Contact me', href: '#contact', id: 'contact' },
   ];
 
   return (
     <div className="min-h-screen bg-[#020b0c] text-gray-200 selection:bg-emerald-500/30 font-sans relative overflow-x-hidden scroll-smooth">
-      {/* Grid Pattern */}
+      {/* Background Grid Pattern */}
       <div 
         className="fixed inset-0 pointer-events-none opacity-20"
         style={{
@@ -179,29 +191,23 @@ export default function Portfolio() {
       />
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-teal-500/10 blur-[150px] pointer-events-none rounded-full" />
 
-      {/* Floating Responsive Header */}
+      {/* Floating Responsive Header with Uniform Navigation */}
       <header className="fixed top-4 sm:top-6 left-0 right-0 z-50 flex justify-center px-4">
-        <div className="w-full max-w-2xl">
-          <nav className="flex items-center justify-between px-4 sm:px-6 py-2 rounded-full bg-[#07191b]/90 backdrop-blur-md border border-teal-500/20 shadow-lg shadow-black/50 text-xs sm:text-sm">
-            <a href="#hero" className="flex items-center gap-2 cursor-pointer">
-              <span className="w-6 h-6 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 font-bold flex items-center justify-center text-xs">
-                A
-              </span>
-              <span className="font-semibold text-white tracking-wide">Abhuday</span>
-            </a>
-
+        <div className="w-fit max-w-full">
+          <nav className="flex items-center justify-center px-2 sm:px-3 py-1.5 rounded-full bg-[#07191b]/90 backdrop-blur-md border border-teal-500/20 shadow-lg shadow-black/50 text-xs sm:text-sm">
+            
             {/* Desktop Navigation Links */}
-            <div className="hidden md:flex items-center gap-1 sm:gap-2">
+            <div className="hidden md:flex items-center gap-1 sm:gap-1.5">
               {navLinks.map((link) => {
                 const isActive = activeSection === link.id;
                 return (
                   <a
                     key={link.id}
                     href={link.href}
-                    className={`px-3 py-1.5 rounded-full transition-all duration-200 font-medium ${
+                    className={`px-3.5 py-1.5 rounded-full transition-all duration-200 font-medium whitespace-nowrap ${
                       isActive 
                         ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shadow-sm shadow-emerald-500/10' 
-                        : 'text-gray-400 hover:text-white hover:bg-teal-950/40'
+                        : 'text-gray-400 hover:text-white hover:bg-teal-950/40 border border-transparent'
                     }`}
                   >
                     {link.name}
@@ -210,31 +216,22 @@ export default function Portfolio() {
               })}
             </div>
 
-            {/* Desktop Contact CTA */}
-            <a 
-              href="#contact" 
-              className={`hidden md:inline-block px-4 py-1.5 rounded-full transition-all font-medium text-xs ${
-                activeSection === 'contact'
-                  ? 'bg-emerald-500 text-gray-950 font-bold shadow-md shadow-emerald-500/20'
-                  : 'text-gray-400 hover:text-white hover:bg-teal-950/40 border border-transparent'
-              }`}
-            >
-              Contact me
-            </a>
-
-            {/* Mobile Hamburger Toggle */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-1.5 rounded-lg text-gray-400 hover:text-white focus:outline-none"
-              aria-label="Toggle Navigation Menu"
-            >
-              {mobileMenuOpen ? <X size={20} className="text-emerald-400" /> : <Menu size={20} />}
-            </button>
+            {/* Mobile Menu Toggle */}
+            <div className="md:hidden flex items-center justify-between w-full min-w-[200px] px-3">
+              <span className="text-xs text-gray-400 font-mono">Menu</span>
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-1.5 rounded-lg text-gray-400 hover:text-white focus:outline-none"
+                aria-label="Toggle Navigation Menu"
+              >
+                {mobileMenuOpen ? <X size={20} className="text-emerald-400" /> : <Menu size={20} />}
+              </button>
+            </div>
           </nav>
 
-          {/* Mobile Dropdown Menu */}
+          {/* Mobile Dropdown */}
           {mobileMenuOpen && (
-            <div className="md:hidden mt-2 p-4 rounded-2xl bg-[#07191b]/95 backdrop-blur-xl border border-teal-500/30 shadow-2xl flex flex-col gap-2">
+            <div className="md:hidden mt-2 p-3 rounded-2xl bg-[#07191b]/95 backdrop-blur-xl border border-teal-500/30 shadow-2xl flex flex-col gap-1.5">
               {navLinks.map((link) => {
                 const isActive = activeSection === link.id;
                 return (
@@ -252,51 +249,46 @@ export default function Portfolio() {
                   </a>
                 );
               })}
-              <a
-                href="#contact"
-                onClick={() => setMobileMenuOpen(false)}
-                className="mt-2 text-center py-2.5 rounded-xl bg-emerald-500 text-gray-950 font-bold text-xs shadow-md shadow-emerald-500/20"
-              >
-                Contact me
-              </a>
             </div>
           )}
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section id="hero" className="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-28 pb-16 relative z-10">
-        <div className="mb-6 flex flex-col items-center">
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-b from-[#0a2729] to-[#041315] border border-teal-500/30 p-1 shadow-xl flex items-center justify-center">
-            {/* Avatar & Name Badge */}
-            <div className="mb-8 flex flex-col items-center">
-              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-b from-[#0a2729] to-[#041315] border border-teal-500/30 p-1.5 shadow-2xl shadow-teal-950/50 flex items-center justify-center">
-                <img 
-                  src="/profile.png" 
-                  alt="Abhuday Sudhir" 
-                  className="w-full h-full object-cover rounded-2xl"
-                />
-              </div>
-              <span className="mt-3 text-xs sm:text-sm font-mono text-emerald-300 bg-[#071d20] px-4 py-1 rounded-full border border-teal-500/30 whitespace-nowrap shadow-md">
-                Abhuday Sudhir
-              </span>
-            </div>
-          </div>
+      {/* Hero Section (Single Screen Landing Page) */}
+      <section id="hero" className="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-16 pb-12 relative z-10">
+        
+        {/* Dominant Primary Headline with Typewriter Animation */}
+        <div className="mb-4 min-h-[4rem] sm:min-h-[5.5rem] flex items-center justify-center">
+          <h1 className="text-4xl sm:text-7xl md:text-8xl font-extrabold tracking-tight text-white whitespace-nowrap drop-shadow-lg">
+            {typedGreeting.includes("Abhuday") ? (
+              <>
+                Hey, I&apos;m{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-emerald-400 to-teal-200">
+                  Abhuday
+                </span>
+                {typedGreeting.slice(typedGreeting.indexOf("Abhuday") + 7)}
+              </>
+            ) : (
+              typedGreeting
+            )}
+            <span className="inline-block w-2 sm:w-3 h-8 sm:h-16 bg-emerald-400 ml-2 animate-pulse rounded-full align-middle" />
+          </h1>
         </div>
 
-        <h1 className="text-3xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white max-w-4xl leading-[1.15] mb-6">
-          From Clean Code To Scale, <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-200 via-emerald-300 to-teal-400">
+        {/* Refined Secondary Tagline */}
+        <h2 className="text-xl sm:text-3xl md:text-4xl font-bold tracking-tight text-gray-200 max-w-3xl leading-snug mb-5">
+          From Clean Code To Scale, <br className="hidden sm:inline" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-emerald-400">
             I Make Systems Work Better!
           </span>
-        </h1>
+        </h2>
 
-        <p className="max-w-2xl text-gray-400 text-sm sm:text-base mb-8 leading-relaxed">
+        <p className="max-w-xl text-gray-400 text-sm sm:text-base mb-10 leading-relaxed">
           Java backend engineer architecting event-driven microservices with Spring Boot, Kafka, and Redis, paired with autonomous Agentic AI workflows.
         </p>
 
-        {/* Hero Actions */}
-        <div className="flex flex-wrap justify-center items-center gap-3.5 mb-16">
+        {/* Hero Actions & Social Links Bar */}
+        <div className="flex flex-wrap justify-center items-center gap-4">
           <a 
             href="#contact" 
             className="px-6 py-2.5 rounded-full bg-white text-gray-950 font-semibold text-xs tracking-wide hover:bg-gray-200 transition-all shadow-md"
@@ -304,27 +296,24 @@ export default function Portfolio() {
             Contact me
           </a>
           <a 
-            href="#projects" 
-            className="px-6 py-2.5 rounded-full bg-[#0a2022] hover:bg-[#0f2d30] border border-teal-500/30 text-emerald-200 font-medium text-xs transition-all"
-          >
-            See portfolio
-          </a>
-          <a 
             href="/resume.pdf" 
             download="Abhuday_Sudhir_Resume.pdf"
-            className="flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-medium text-xs transition-all"
+            className="flex items-center gap-1.5 px-6 py-2.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-medium text-xs transition-all shadow-sm"
           >
             <Download size={14} />
             <span>Download CV</span>
           </a>
-        </div>
-
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-10 text-xs font-mono text-emerald-500/60 pt-6 border-t border-teal-950/80 max-w-3xl w-full">
-          <span>#Spring_Boot</span>
-          <span>#Kafka_Microservices</span>
-          <span>#Distributed_Systems</span>
-          <span>#LangGraph_Agents</span>
-          <span>#PostgreSQL_Redis</span>
+          <div className="flex items-center gap-3 pl-3 sm:pl-4 border-l border-teal-900/60 text-gray-400">
+            <a href="https://github.com/abhuday-sudhir" target="_blank" rel="noreferrer" className="hover:text-emerald-400 transition-colors">
+              <GithubIcon size={18} />
+            </a>
+            <a href="https://linkedin.com/in/abhuday-sudhir" target="_blank" rel="noreferrer" className="hover:text-emerald-400 transition-colors">
+              <LinkedinIcon size={18} />
+            </a>
+            <a href="mailto:abhudaysudhir2003@gmail.com" className="hover:text-emerald-400 transition-colors">
+              <Mail size={18} />
+            </a>
+          </div>
         </div>
       </section>
 
@@ -420,7 +409,7 @@ export default function Portfolio() {
       </section>
 
       {/* Achievements Section */}
-      <section id="achievements" className="max-w-4xl mx-auto px-6 py-16 relative z-10 scroll-mt-24">
+      <section id="achievements" className="max-w-4xl mx-auto px-6 py-20 relative z-10 scroll-mt-28">
         <h2 className="text-2xl font-bold text-white mb-8 tracking-tight">Publications & Coding Profiles</h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -439,7 +428,7 @@ export default function Portfolio() {
                 <ArrowUpRight size={18} className="text-gray-500 group-hover:text-emerald-400 transition-colors" />
               </div>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Solved 500+ algorithmic challenges with a contest rating of 1744, ranking within the top 12% globally[cite: 3].
+                Solved 500+ algorithmic challenges with a contest rating of 1744, ranking within the top 12% globally.
               </p>
             </div>
           </a>
@@ -459,7 +448,7 @@ export default function Portfolio() {
                 <ArrowUpRight size={18} className="text-gray-500 group-hover:text-emerald-400 transition-colors" />
               </div>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Authored &quot;AI-Driven Assessment of Cognitive Stress&quot; — Book Chapter accepted in a Scopus-indexed IGI Global series[cite: 2].
+                Authored &quot;AI-Driven Assessment of Cognitive Stress&quot; — Book Chapter accepted in a Scopus-indexed IGI Global series.
               </p>
             </div>
           </a>
@@ -467,7 +456,7 @@ export default function Portfolio() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="max-w-4xl mx-auto px-6 py-16 relative z-10 scroll-mt-24">
+      <section id="contact" className="max-w-4xl mx-auto px-6 pt-12 pb-28 relative z-10 scroll-mt-28">
         <div className="rounded-3xl p-8 sm:p-12 bg-gradient-to-b from-[#061e20] to-[#030e10] border border-teal-500/30 shadow-2xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
@@ -482,8 +471,8 @@ export default function Portfolio() {
               </p>
               <div className="text-xs text-gray-400 space-y-1.5 font-mono">
                 <p>📍 Agra / Remote, India</p>
-                <p>📧 abhudaysudhir2003@gmail.com[cite: 3]</p>
-                <p>📞 +91 6397253171[cite: 3]</p>
+                <p>📧 abhudaysudhir2003@gmail.com</p>
+                <p>📞 +91 6397253171</p>
               </div>
             </div>
 
